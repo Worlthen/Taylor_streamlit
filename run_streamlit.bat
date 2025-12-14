@@ -1,0 +1,1 @@
+python -m streamlit run taylor_streamlit.py --server.fileWatcherType none

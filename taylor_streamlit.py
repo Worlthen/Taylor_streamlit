@@ -115,31 +115,49 @@ def taylor_expand(x, x0, terms, func, deriv):
     return result
 
 def estimate_range(func, deriv, x0, terms, threshold=0.01):
+    """估算泰勒展开的有效拟合范围，使用绝对误差"""
     def taylor_at(xv):
         r, facts = 0.0, get_factorials(terms)
         for n in range(terms):
-            d = numerical_deriv(func, x0, n) if deriv == "numerical" else (deriv(x0, n) or numerical_deriv(func, x0, n))
+            if deriv == "numerical":
+                d = numerical_deriv(func, x0, n)
+            else:
+                d = deriv(x0, n)
+                if d is None:  # 只有 None 才回退，0 是有效值
+                    d = numerical_deriv(func, x0, n)
             r += d * (xv - x0)**n / facts[n]
         return r
+    
     def find_bound(direction):
-        lo, hi = 0.0, 10.0
-        for _ in range(20):
+        lo, hi = 0.0, 15.0
+        for _ in range(25):
             mid = (lo + hi) / 2
             xt = x0 + direction * mid
             try:
                 fv = func(np.array([xt]))[0] if hasattr(func(np.array([xt])), '__len__') else func(xt)
                 tv = taylor_at(xt)
-                if not np.isfinite(fv) or not np.isfinite(tv): hi = mid
-                elif abs(fv - tv) / (abs(fv) + 1e-10) > threshold: hi = mid
-                else: lo = mid
-            except: hi = mid
+                if not np.isfinite(fv) or not np.isfinite(tv): 
+                    hi = mid
+                else:
+                    abs_err = abs(fv - tv)
+                    if abs_err > threshold:
+                        hi = mid
+                    else:
+                        lo = mid
+            except: 
+                hi = mid
         return lo
+    
     return (x0 - find_bound(-1), x0 + find_bound(1))
 
 def format_expr(x0, terms, func, deriv):
     parts = []
     for n in range(min(terms, 6)):
-        d = numerical_deriv(func, x0, n) if deriv == "numerical" else (deriv(x0, n) or numerical_deriv(func, x0, n))
+        if deriv == "numerical":
+            d = numerical_deriv(func, x0, n)
+        else:
+            d = deriv(x0, n)
+            if d is None: d = numerical_deriv(func, x0, n)
         c = d / factorial(n) if n else d
         if abs(c) < 1e-10: continue
         cs = str(int(round(c))) if abs(c-round(c))<1e-6 else f"{c:.3f}"
@@ -284,7 +302,11 @@ with col1:
         st.latex(f"T_n(x) = {format_expr(x0, terms, func, deriv)}")
         data = []
         for n in range(min(terms, 8)):
-            dv = numerical_deriv(func, x0, n) if deriv == "numerical" else (deriv(x0, n) or numerical_deriv(func, x0, n))
+            if deriv == "numerical":
+                dv = numerical_deriv(func, x0, n)
+            else:
+                dv = deriv(x0, n)
+                if dv is None: dv = numerical_deriv(func, x0, n)
             data.append({"n": n, "f⁽ⁿ⁾(x₀)": f"{dv:.4f}", "系数": f"{dv/factorial(n) if n else dv:.4f}"})
         st.dataframe(pd.DataFrame(data), use_container_width=True, hide_index=True)
 
