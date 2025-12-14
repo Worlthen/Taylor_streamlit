@@ -2,8 +2,11 @@
 
 一个交互式的泰勒级数可视化工具，帮助你直观理解泰勒展开如何逼近各种数学函数。
 
-![Demo](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://worlthen-taylor-streamlit-taylor-streamlit-xxxxxx.streamlit.app)
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> **在线预览**: 部署到 [Streamlit Cloud](https://taylorapp-wvlre9rqezva4umqopdjlb.streamlit.app/) 后即可在线访问
 
 ## ✨ 功能特性
 
