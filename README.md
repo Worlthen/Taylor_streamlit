@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **在线预览**: 部署到 [Streamlit Cloud](https://taylorapp-wvlre9rqezva4umqopdjlb.streamlit.app/) 后即可在线访问
+> **在线预览**: (https://taylorapp-wvlre9rqezva4umqopdjlb.streamlit.app/) 
 
 ## ✨ 功能特性
 
